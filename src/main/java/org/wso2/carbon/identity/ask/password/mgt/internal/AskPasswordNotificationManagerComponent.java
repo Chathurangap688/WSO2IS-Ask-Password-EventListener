@@ -11,9 +11,7 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.wso2.carbon.identity.ask.password.mgt.listener.AskPasswordMgtEventListener;
 import org.wso2.carbon.identity.event.services.IdentityEventService;
-import org.wso2.carbon.identity.governance.internal.IdentityMgtServiceDataHolder;
 import org.wso2.carbon.user.core.listener.UserOperationEventListener;
-import org.wso2.carbon.user.core.service.RealmService;
 
 @Component(
         name = "identity.governance.ask.password.notification.component",
@@ -25,16 +23,9 @@ public class AskPasswordNotificationManagerComponent {
 
     private static IdentityEventService identityEventService;
 
-    private static RealmService realmService;
-
     public static IdentityEventService getIdentityEventService() {
 
         return identityEventService;
-    }
-
-    public static RealmService getRealmService() {
-
-        return realmService;
     }
 
     @Activate
@@ -70,21 +61,5 @@ public class AskPasswordNotificationManagerComponent {
     protected void setIdentityEventService(IdentityEventService identityEventService) {
 
         AskPasswordNotificationManagerComponent.identityEventService = identityEventService;
-    }
-
-    @Reference(
-            name = "RealmService",
-            service = org.wso2.carbon.user.core.service.RealmService.class,
-            cardinality = ReferenceCardinality.MANDATORY,
-            policy = ReferencePolicy.DYNAMIC,
-            unbind = "unsetRealmService")
-    protected void setRealmService(RealmService realmService) {
-
-        AskPasswordNotificationManagerComponent.realmService = realmService;
-    }
-
-    protected void unsetRealmService(RealmService realmService) {
-
-        AskPasswordNotificationManagerComponent.realmService = null;
     }
 }
